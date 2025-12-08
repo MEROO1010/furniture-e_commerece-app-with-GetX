@@ -33,7 +33,7 @@ class AppPages {
     ),
     GetPage(
       name: AppRoutes.PRODUCT_DETAIL,
-      page: () => ProductDetailPage(),
+      page: () => ProductDetailPage(id: ''),
       binding: ProductBinding(),
     ),
     GetPage(

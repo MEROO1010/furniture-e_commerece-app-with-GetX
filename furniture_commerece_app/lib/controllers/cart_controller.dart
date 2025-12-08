@@ -3,12 +3,11 @@ import 'package:get/get.dart';
 import '../services/api_service.dart';
 import '../services/shared_Pref_Service.dart';
 import '../models/cart_item.dart';
-import '../models/base_response.dart';
 import 'base_controller.dart';
 
 class CartController extends BaseController {
-  final ApiService ₐpiService = Get.find();
-  final SharedPrefService ₚrefService = Get.find();
+  final ApiService apiService = Get.find();
+  final SharedPrefService prefService = Get.find();
 
   var cartItems = <CartItem>[].obs;
   var totalAmount = 0.0.obs;
@@ -21,16 +20,16 @@ class CartController extends BaseController {
 
   Future<void> loadCart() async {
     // First, load local cart (for offline)
-    final localCart = await ₚrefService.getCart();
+    final localCart = await prefService.getCart();
     cartItems.value = localCart ?? [];
 
     // Sync with Laravel /api/cart
     try {
-      final response = await ₐpiService.get('/cart');  // Laravel fetches user cart
+      final response = await apiService.get('/cart');  // Laravel fetches user cart
       if (response.success) {
         cartItems.value = (response.data['items'] as List).map((json) => CartItem.fromJson(json)).toList();
         _calculateTotal();
-        await ₚrefService.saveCart(cartItems);  // Sync back to local
+        await prefService.saveCart(cartItems);  // Sync back to local
       }
     } catch (e) {
       // Fallback to local if API fails

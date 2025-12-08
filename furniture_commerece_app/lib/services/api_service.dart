@@ -1,5 +1,3 @@
-
-
 import 'dart:convert';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
@@ -13,7 +11,7 @@ class ApiService extends GetxService {
 
   Future<http.Response> _getHeaders() async {
     final token = await prefService.getToken();
-    return http.Response('', 200);  // Placeholder; actual headers in request
+    return http.Response('', 200); // Placeholder; actual headers in request
   }
 
   Future<http.BaseResponse> get(String endpoint) async {
@@ -22,7 +20,7 @@ class ApiService extends GetxService {
       Uri.parse('baseUrlendpoint'),
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': 'Bearer token',  // JWT from Laravel Sanctum/Passport
+        'Authorization': 'Bearer token', // JWT from Laravel Sanctum/Passport
       },
     );
 
@@ -34,7 +32,7 @@ class ApiService extends GetxService {
     }
   }
 
-  Future<http.BaseResponse> post(String endpoint, Map<String, dynamic> data) async {
+  Future<BaseResponse> post(String endpoint, Map<String, dynamic> data) async {
     final token = await prefService.getToken();
     final response = await http.post(
       Uri.parse('baseUrlendpoint'),
@@ -50,7 +48,7 @@ class ApiService extends GetxService {
   }
 
   Future<BaseResponse> delete(String endpoint) async {
-    final token = await ₚrefService.getToken();
+    final token = await prefService.getToken();
     final response = await http.delete(
       Uri.parse('baseUrlendpoint'),
       headers: {
@@ -64,7 +62,7 @@ class ApiService extends GetxService {
   }
 
   Future<BaseResponse> put(String endpoint, Map<String, dynamic> data) async {
-    final token = await ₚrefService.getToken();
+    final token = await prefService.getToken();
     final response = await http.put(
       Uri.parse('baseUrlendpoint'),
       headers: {
@@ -82,4 +80,4 @@ class ApiService extends GetxService {
 // Laravel Matching Notes:
 // - Models: User.php, Product.php, etc. (use Eloquent, return JSON via Controllers)
 // - Routes (api.php): Route::post('/auth/login', [AuthController::class, 'login']); etc.
-// - Responses: Always return { "success": true, "data": ..., "message": "..." } 
+// - Responses: Always return { "success": true, "data": ..., "message": "..." }

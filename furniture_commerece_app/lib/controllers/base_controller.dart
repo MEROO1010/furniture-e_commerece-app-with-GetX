@@ -1,4 +1,3 @@
-​
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -9,7 +8,12 @@ class BaseController extends GetxController {
   }
 
   void showSuccess(String message) {
-    Get.snackbar('Success', message, snackPosition: SnackPosition.BOTTOM, backgroundColor: Colors.green);
+    Get.snackbar(
+      'Success',
+      message,
+      snackPosition: SnackPosition.BOTTOM,
+      backgroundColor: Colors.green,
+    );
   }
 
   // Loading state
