@@ -14,31 +14,31 @@ class ApiService extends GetxService {
     return http.Response('', 200); // Placeholder; actual headers in request
   }
 
-  Future<http.BaseResponse> get(String endpoint) async {
+  Future<BaseResponse> get(String endpoint) async {
     final token = await prefService.getToken();
     final response = await http.get(
-      Uri.parse('baseUrlendpoint'),
+      Uri.parse('$baseUrl$endpoint'),
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': 'Bearer token', // JWT from Laravel Sanctum/Passport
+        'Authorization': 'Bearer $token', // JWT from Laravel Sanctum/Passport
       },
     );
 
     if (response.statusCode == 200 || response.statusCode == 201) {
       final jsonData = json.decode(response.body);
-      return http.BaseResponse.fromJson(jsonData);
+      return BaseResponse.fromJson(jsonData);
     } else {
-      throw Exception('API Error:{response.statusCode} - {response.body}');
+      throw Exception('API Error: ${response.statusCode} - ${response.body}');
     }
   }
 
   Future<BaseResponse> post(String endpoint, Map<String, dynamic> data) async {
     final token = await prefService.getToken();
     final response = await http.post(
-      Uri.parse('baseUrlendpoint'),
+      Uri.parse('$baseUrl$endpoint'),
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': 'Bearertoken',
+        'Authorization': 'Bearer $token',
       },
       body: json.encode(data),
     );
@@ -50,10 +50,10 @@ class ApiService extends GetxService {
   Future<BaseResponse> delete(String endpoint) async {
     final token = await prefService.getToken();
     final response = await http.delete(
-      Uri.parse('baseUrlendpoint'),
+      Uri.parse('$baseUrl$endpoint'),
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': 'Bearer token',
+        'Authorization': 'Bearer $token',
       },
     );
 
@@ -64,10 +64,10 @@ class ApiService extends GetxService {
   Future<BaseResponse> put(String endpoint, Map<String, dynamic> data) async {
     final token = await prefService.getToken();
     final response = await http.put(
-      Uri.parse('baseUrlendpoint'),
+      Uri.parse('$baseUrl$endpoint'),
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': 'Bearertoken',
+        'Authorization': 'Bearer $token',
       },
       body: json.encode(data),
     );

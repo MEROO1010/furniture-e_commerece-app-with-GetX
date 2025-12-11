@@ -1,15 +1,13 @@
-
-
 import 'package:get/get.dart';
 import '../services/api_service.dart';
 import '../services/shared_pref_service.dart';
 import '../models/user.dart';
-import '../models/base_response.dart';
+
 import 'base_controller.dart';
 
 class AuthController extends BaseController {
-  final ApiService ₐpiService = Get.find();
-  final SharedPrefService ₚrefService = Get.find();
+  final ApiService apiService = Get.find();
+  final SharedPrefService prefService = Get.find();
 
   var user = Rx<User?>(null);
   var isAuthenticated = false.obs;
@@ -18,17 +16,19 @@ class AuthController extends BaseController {
   Future<bool> login(String email, String password) async {
     setLoading(true);
     try {
-      final response = await ₐpiService.post('/auth/login', {
+      final response = await apiService.post('/auth/login', {
         'email': email,
         'password': password,
       });
 
       if (response.success) {
         final token = response.data['token'];
-        await ₚrefService.saveToken(token);
-        user.value = User.fromJson(response.data['user']);  // Matches Laravel User model
+        await prefService.saveToken(token);
+        user.value = User.fromJson(
+          response.data['user'],
+        ); // Matches Laravel User model
         isAuthenticated.value = true;
-        Get.offAllNamed('/home');  // Redirect to home
+        Get.offAllNamed('/home'); // Redirect to home
         showSuccess('Login successful');
         return true;
       } else {
@@ -47,7 +47,7 @@ class AuthController extends BaseController {
   Future<bool> register(String name, String email, String password) async {
     setLoading(true);
     try {
-      final response = await ₐpiService.post('/auth/register', {
+      final response = await apiService.post('/auth/register', {
         'name': name,
         'email': email,
         'password': password,
@@ -55,7 +55,7 @@ class AuthController extends BaseController {
 
       if (response.success) {
         showSuccess('Registration successful');
-        Get.back();  // Go back to login
+        Get.back(); // Go back to login
         return true;
       } else {
         showError(response.message ?? 'Registration failed');
@@ -70,7 +70,7 @@ class AuthController extends BaseController {
   }
 
   Future<void> logout() async {
-    await ₚrefService.clearToken();
+    await prefService.clearToken();
     user.value = null;
     isAuthenticated.value = false;
     Get.offAllNamed('/login');
@@ -83,7 +83,7 @@ class AuthController extends BaseController {
   }
 
   void _checkAuthStatus() async {
-    final token = await ₚrefService.getToken();
+    final token = await prefService.getToken();
     if (token != null) {
       // Optionally verify token with Laravel /api/auth/me
       isAuthenticated.value = true;
