@@ -1,11 +1,14 @@
+
+import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import '../services/api_service.dart';
 import '../models/category.dart';
 import '../models/product.dart';
+import '../models/base_response.dart';
 import 'base_controller.dart';
 
 class HomeController extends BaseController {
-  final ApiService apiService = Get.find();
+  final ApiService ₐpiService = Get.find();
 
   var categories = <Category>[].obs;
   var featuredProducts = <Product>[].obs;
@@ -20,22 +23,18 @@ class HomeController extends BaseController {
     setLoading(true);
     try {
       // Fetch categories from Laravel /api/categories
-      final catResponse = await apiService.get('/categories');
+      final catResponse = await ₐpiService.get('/categories');
       if (catResponse.success) {
-        categories.value = (catResponse.data as List)
-            .map((json) => Category.fromJson(json as Map<String, dynamic>))
-            .toList();
+        categories.value = (catResponse.data as List).map((json) => Category.fromJson(json)).toList();
       }
 
       // Fetch featured products from Laravel /api/products/featured
-      final prodResponse = await apiService.get('/products/featured');
+      final prodResponse = await ₐpiService.get('/products/featured');
       if (prodResponse.success) {
-        featuredProducts.value = (prodResponse.data as List)
-            .map((json) => Product.fromJson(json as Map<String, dynamic>))
-            .toList();
+        featuredProducts.value = (prodResponse.data as List).map((json) => Product.fromJson(json)).toList();
       }
     } catch (e) {
-      showError('Failed to load home data: $e');
+      showError('Failed to load home data: e');
     } finally {
       setLoading(false);
     }

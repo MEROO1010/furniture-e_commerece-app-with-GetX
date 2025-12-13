@@ -1,6 +1,7 @@
+import 'package:flutter/foundation.dart';
+import 'package:furniture_commerece_app/services/api_service.dart';
 import 'package:get/get.dart';
-import '../services/api_service.dart';
-import '../models/category.dart';
+
 import '../models/product.dart';
 import 'base_controller.dart';
 
@@ -23,7 +24,7 @@ class HomeController extends BaseController {
       final catResponse = await apiService.get('/categories');
       if (catResponse.success) {
         categories.value = (catResponse.data as List)
-            .map((json) => Category.fromJson(json as Map<String, dynamic>))
+            .map((json) => Category.fromJson(json))
             .toList();
       }
 
@@ -31,11 +32,11 @@ class HomeController extends BaseController {
       final prodResponse = await apiService.get('/products/featured');
       if (prodResponse.success) {
         featuredProducts.value = (prodResponse.data as List)
-            .map((json) => Product.fromJson(json as Map<String, dynamic>))
+            .map((json) => Product.fromJson(json))
             .toList();
       }
     } catch (e) {
-      showError('Failed to load home data: $e');
+      showError('Failed to load home data: e');
     } finally {
       setLoading(false);
     }

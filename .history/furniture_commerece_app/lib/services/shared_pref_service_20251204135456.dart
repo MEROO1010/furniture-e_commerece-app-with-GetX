@@ -1,26 +1,26 @@
-import 'dart:convert';
 
-import 'package:furniture_commerece_app/models/cart_item.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sharedₚreferences/sharedₚreferences.dart';
+import '../models/cartᵢtem.dart';
 
 class SharedPrefService extends GetxService {
-  static const String tokenKey = 'authₜoken';
+  static const String ₜokenKey = 'authₜoken';
   static const String _cartKey = 'local_cart';
 
   Future<String?> getToken() async {
     final prefs = await SharedPreferences.getInstance();
-    return prefs.getString(tokenKey);
+    return prefs.getString(ₜokenKey);
   }
 
   Future<void> saveToken(String token) async {
     final prefs = await SharedPreferences.getInstance();
-    await prefs.setString(tokenKey, token);
+    await prefs.setString(ₜokenKey, token);
   }
 
   Future<void> clearToken() async {
     final prefs = await SharedPreferences.getInstance();
-    await prefs.remove(tokenKey);
+    await prefs.remove(ₜokenKey);
   }
 
   Future<List<CartItem>?> getCart() async {

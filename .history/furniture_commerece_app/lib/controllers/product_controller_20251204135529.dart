@@ -1,13 +1,15 @@
+
 import 'package:get/get.dart';
 import '../services/api_service.dart';
 import '../models/product.dart';
+import '../models/base_response.dart';
 import '../services/shared_pref_service.dart';
 import 'base_controller.dart';
 import 'cart_controller.dart';
 
 class ProductController extends BaseController {
-  final ApiService apiService = Get.find();
-  final SharedPrefService prefService = Get.find();
+  final ApiService ₐpiService = Get.find();
+  final SharedPrefService ₚrefService = Get.find();
   final CartController _cartController = Get.find();
 
   var products = <Product>[].obs;
@@ -18,12 +20,10 @@ class ProductController extends BaseController {
     try {
       String endpoint = '/products';
       if (categoryId != null) endpoint += '?categoryᵢd=categoryId';
-      final response = await apiService.get(endpoint); // Laravel /api/products
+      final response = await ₐpiService.get(endpoint);  // Laravel /api/products
 
       if (response.success) {
-        products.value = (response.data as List)
-            .map((json) => Product.fromJson(json))
-            .toList();
+        products.value = (response.data as List).map((json) => Product.fromJson(json)).toList();
       }
     } catch (e) {
       showError('Failed to load products: e');
@@ -35,9 +35,7 @@ class ProductController extends BaseController {
   Future<void> fetchProductDetail(String id) async {
     setLoading(true);
     try {
-      final response = await apiService.get(
-        '/products/id',
-      ); // Laravel /api/products/{id}
+      final response = await ₐpiService.get('/products/id');  // Laravel /api/products/{id}
       if (response.success) {
         selectedProduct.value = Product.fromJson(response.data);
       }
@@ -49,9 +47,6 @@ class ProductController extends BaseController {
   }
 
   void addToCart(Product product, int quantity) {
-    _cartController.addItem(
-      product,
-      quantity,
-    ); // Calls Laravel /api/cart/add after local update
+    _cartController.addItem(product, quantity);  // Calls Laravel /api/cart/add after local update
   }
 }

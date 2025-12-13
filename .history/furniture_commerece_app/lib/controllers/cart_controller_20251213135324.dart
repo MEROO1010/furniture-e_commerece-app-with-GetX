@@ -61,7 +61,7 @@ class CartController extends BaseController {
           productId: product.id,
           quantity: quantity,
           product: product,
-          price: product.price,
+          price: 0.0,
         ),
       );
     }

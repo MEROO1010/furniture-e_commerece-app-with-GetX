@@ -1,5 +1,6 @@
+import 'package:furniture_commerece_app/services/api_service.dart'
+    show ApiService;
 import 'package:get/get.dart';
-import '../services/api_service.dart';
 import '../services/shared_Pref_Service.dart';
 import '../models/cart_item.dart';
 import 'base_controller.dart';
@@ -48,20 +49,14 @@ class CartController extends BaseController {
       (item) => item.productId == product.id,
     );
     if (existingIndex >= 0) {
-      final existingItem = cartItems[existingIndex];
-      cartItems[existingIndex] = CartItem(
-        productId: existingItem.productId,
-        quantity: existingItem.quantity + quantity,
-        price: existingItem.price,
-        product: existingItem.product,
-      );
+      cartItems[existingIndex].quantity += quantity;
     } else {
       cartItems.add(
         CartItem(
           productId: product.id,
           quantity: quantity,
           product: product,
-          price: product.price,
+          price: 0.0,
         ),
       );
     }
@@ -70,7 +65,7 @@ class CartController extends BaseController {
 
     // Sync to Laravel /api/cart/add
     apiService.post('/cart/add', {
-      'product_id': product.id,
+      'productᵢd': product.id,
       'quantity': quantity,
     });
   }
@@ -81,7 +76,7 @@ class CartController extends BaseController {
     saveAndSync();
 
     // Sync to Laravel /api/cart/remove
-    apiService.delete('/cart/remove/$productId');
+    apiService.delete('/cart/remove/productId');
   }
 
   void _calculateTotal() {

@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import '../services/api_service.dart';
 import '../models/category.dart';
 import '../models/product.dart';
+import '../models/base_response.dart';
 import 'base_controller.dart';
 
 class HomeController extends BaseController {
